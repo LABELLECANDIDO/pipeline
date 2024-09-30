@@ -1,12 +1,27 @@
-create_file:
-  image: alpine
-  script:
-    - echo "Iniciando..."
-    - mkdir build
-    - touch build/somefile.txt
+image: node:latest
 
-test_files:
-  image: alpine
-  script:
-    - test -f build/somefile.txt
+stages:
+  - build
+  - test
+  - analyse
 
+run-build:
+  stage: build
+  script:
+    - npm install
+  artifacts:
+    paths:
+      - node_modules
+
+run-test:
+  stage: test
+  script:
+    - npm run test
+  artifacts:
+    paths:
+      - node_modules/
+
+run-analyse:
+  stage: analyse
+  script:
+    - npm run lint
